@@ -21,7 +21,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     var dataFavorite = await FavoriteService.fetchingDoctorFavorite();
     if (dataFavorite is List<DoctorsDtoDataModel>) {
       doctors.clear();
-
+      doctors.addAll(dataFavorite);
       if (doctors.isEmpty) {
         return emit(FavoriteFailureState(
             error: "You don't have a favorite doctor yet"));

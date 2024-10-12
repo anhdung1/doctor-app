@@ -211,7 +211,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 20),
                           child: continueButton(() {
-                            print(lastNameController.text);
                             context.read<ProfileBloc>().add(ProfileEditEvent(
                                 user: UserDataModel(
                                     lastName: lastNameController.text,

@@ -35,7 +35,6 @@ class MyHome extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => FavoriteBloc([])..add(FavoriteStartedEvent()),
-            child: const Favorite(),
           )
         ],
         child: MyHomePage(
