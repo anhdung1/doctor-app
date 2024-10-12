@@ -22,6 +22,9 @@ public class UserInfo {
 	private String firstName;
 	private String lastName;
 	private String image;
+	public UserInfo() {
+
+	}
 	@OneToOne
 	@JoinColumn(name="user_id",referencedColumnName="id")
 	@JsonIgnore

@@ -4,6 +4,7 @@ import 'package:app/bloc/signup_bloc/signup_state.dart';
 import 'package:app/views/user/login.dart';
 import 'package:app/views/variables/variable.dart';
 import 'package:app/views/widgets/auth.dart';
+import 'package:app/views/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -386,23 +387,6 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         )
       ],
-    );
-  }
-
-  continueButton(Function() onTap, nameButton) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        alignment: Alignment.center,
-        width: MediaQuery.of(context).size.width - 30,
-        height: 54,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7), color: colorButton),
-        child: Text(
-          nameButton,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
-        ),
-      ),
     );
   }
 }

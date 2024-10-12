@@ -26,6 +26,26 @@ class ApiService {
         headers: headers(await getToken()), body: jsonEncode(body));
   }
 
+  static putMapping(String url, body) async {
+    return await client.put(Uri.parse("http://localhost:8080/$url"),
+        headers: headers(await getToken()), body: jsonEncode(body));
+  }
+
+  static Future jsonHandlePutMapping<T extends JsonSerializable>(
+      T Function(Map<String, dynamic>) fromMap, String url, body) async {
+    try {
+      var response = await ApiService.putMapping(url, body);
+      if (response.statusCode == 200) {
+        return JsonToListService.jsonToList(response, fromMap);
+      } else {
+        return "Failed to load data: ${getErrorMessage(response.statusCode)}";
+      }
+    } catch (e) {
+      log("Error occurred: $e");
+      return ("Error fetching data");
+    }
+  }
+
   static Future jsonHandleGetMapping<T extends JsonSerializable>(
       T Function(Map<String, dynamic>) fromMap, String url) async {
     try {

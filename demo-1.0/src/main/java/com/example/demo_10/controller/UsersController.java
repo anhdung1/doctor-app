@@ -2,6 +2,9 @@ package com.example.demo_10.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +20,9 @@ public class UsersController {
 	public UserInfo getUserInfor() {
 	
 		return userService.getUserInfo(userService.getUsername());
+	}
+	@PutMapping
+	public UserInfo updateUserInfo(@RequestBody UserInfo userInfo) {
+		return userService.updateUserInfo(userService.getUsername(), userInfo);
 	}
 }

@@ -12,7 +12,7 @@ clipImage(imageUrl) {
         errorBuilder: (context, error, stackTrace) {
           return Image.asset(
             "assets/images/default.png",
-            width: 60,
+            // width: 60,
             errorBuilder: (context, error, stackTrace) {
               return const Text("error");
             },

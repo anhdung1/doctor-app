@@ -137,7 +137,7 @@ class _SelectTimeState extends State<SelectTime> {
               border: number % 2 == 0
                   ? Border.all(color: Colors.black26, width: 0.3)
                   : Border.all(),
-              color: number % 2 == 0 ? Colors.transparent : Colors.green[400]),
+              color: number % 2 == 0 ? Colors.transparent : colorButton),
           // child: Column(children: [
           //   Text(data)
           // ],),

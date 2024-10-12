@@ -1,14 +1,18 @@
-import 'package:app/model/user_response.dart';
+import 'package:app/views/user/user_info/profile.dart';
 import 'package:app/views/widgets/clip_image.dart';
 import 'package:flutter/material.dart';
 
 class UserMenu extends StatefulWidget {
   const UserMenu(
       {super.key,
-      required this.user,
       required this.show,
-      required this.onToggle});
-  final UserRespone user;
+      required this.onToggle,
+      required this.lastName,
+      required this.firstName,
+      required this.imageUrl});
+  final String lastName;
+  final String firstName;
+  final String imageUrl;
   final bool show;
   final Function onToggle;
   @override
@@ -62,12 +66,12 @@ class _UserMenuState extends State<UserMenu> {
                               SizedBox(
                                 width: 44,
                                 height: 44,
-                                child: clipImage(widget.user.image),
+                                child: clipImage(widget.imageUrl),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Text(
-                                  "${widget.user.firstName} ${widget.user.lastName}",
+                                  "${widget.firstName} ${widget.lastName}",
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -94,14 +98,21 @@ class _UserMenuState extends State<UserMenu> {
                             ],
                           ),
                           const Padding(padding: EdgeInsets.only(top: 60)),
-                          itemMenu(Icons.account_circle, "Profile"),
-                          itemMenu(Icons.payment, "Payments"),
-                          itemMenu(Icons.shopify_outlined, "Medicine Orders"),
+                          itemMenu(Icons.account_circle, "Profile", () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Profile(),
+                                ));
+                          }),
+                          itemMenu(Icons.payment, "Payments", () {}),
                           itemMenu(
-                              Icons.calendar_month_outlined, "Test Bookings"),
-                          itemMenu(Icons.security, "Privacy & Policy"),
-                          itemMenu(Icons.help, "Help Center"),
-                          itemMenu(Icons.settings, "Settings"),
+                              Icons.shopify_outlined, "Medicine Orders", () {}),
+                          itemMenu(Icons.calendar_month_outlined,
+                              "Test Bookings", () {}),
+                          itemMenu(Icons.security, "Privacy & Policy", () {}),
+                          itemMenu(Icons.help, "Help Center", () {}),
+                          itemMenu(Icons.settings, "Settings", () {}),
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: SizedBox(
@@ -150,12 +161,12 @@ class _UserMenuState extends State<UserMenu> {
     );
   }
 
-  itemMenu(IconData icon, String name) {
+  itemMenu(IconData icon, String name, onTap) {
     return SizedBox(
       width: 200,
       height: 61,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,

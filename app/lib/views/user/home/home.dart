@@ -1,8 +1,8 @@
 import 'dart:ui';
+import 'package:app/bloc/all_bloc_favorite/favorite_bloc/favorite_bloc.dart';
 import 'package:app/bloc/all_bloc_home/doctor_bloc/doctor_bloc.dart';
 
 import 'package:app/bloc/all_bloc_home/doctor_bloc/doctor_state.dart';
-import 'package:app/model/user_response.dart';
 import 'package:app/views/user/doctor_details.dart';
 
 import 'package:app/views/user/home/search.dart';
@@ -16,11 +16,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class Home extends StatefulWidget {
   const Home({
     super.key,
-    required this.userRespone,
     required this.onToggle,
     required this.show,
+    required this.lastName,
+    required this.firstName,
+    required this.imageUrl,
   });
-  final UserRespone userRespone;
+  final String lastName;
+  final String firstName;
+  final String imageUrl;
   final Function onToggle;
   final bool show;
   @override
@@ -81,7 +85,7 @@ class _HomeState extends State<Home> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Hi ${widget.userRespone.firstName} ${widget.userRespone.lastName}",
+                                "Hi ${widget.firstName} ${widget.lastName}",
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
@@ -102,7 +106,7 @@ class _HomeState extends State<Home> {
                         Container(
                           padding: const EdgeInsets.only(right: 15, top: 20),
                           width: 70,
-                          child: imageButton(widget.userRespone.image, () {
+                          child: imageButton(widget.imageUrl, () {
                             setState(() {
                               widget.onToggle();
                             });
@@ -130,7 +134,10 @@ class _HomeState extends State<Home> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Search(content: value),
+                            builder: (_) => BlocProvider<FavoriteBloc>.value(
+                              value: BlocProvider.of(context),
+                              child: Search(content: value),
+                            ),
                           ),
                         );
                       },

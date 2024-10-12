@@ -12,6 +12,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   FavoriteBloc(this.doctors) : super(FavoriteInitialState()) {
     on<FavoriteStartedEvent>(_onfetching);
     on<FavoriteEditEvent>(_editFavorite);
+    on<FavoriteUpdateEvent>(_updateFavorite);
   }
 
   FutureOr<void> _onfetching(
@@ -20,7 +21,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     var dataFavorite = await FavoriteService.fetchingDoctorFavorite();
     if (dataFavorite is List<DoctorsDtoDataModel>) {
       doctors.clear();
-      doctors.addAll(dataFavorite);
+
       if (doctors.isEmpty) {
         return emit(FavoriteFailureState(
             error: "You don't have a favorite doctor yet"));
@@ -31,18 +32,19 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     }
   }
 
-  FutureOr<void> _editFavorite(
+  FutureOr _editFavorite(
       FavoriteEditEvent event, Emitter<FavoriteState> emit) async {
     emit(FavoriteLoadingState());
     var isSuccess = await FavoriteService.updateDoctorFavorite(
         event.doctorId, event.isFavorite);
+
     if (isSuccess is DoctorsDtoDataModel) {
       int index =
           doctors.indexWhere((doctor) => doctor.doctors.id == event.doctorId);
-      if (index != -1 && isSuccess.isFavorite == false) {
-        doctors.removeAt(index);
-      } else {
+      if (index == -1) {
         doctors.add(isSuccess);
+      } else {
+        doctors.removeAt(index);
       }
       if (doctors.isEmpty) {
         return emit(FavoriteFailureState(
@@ -53,5 +55,11 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     } else {
       return emit(FavoriteFailureState(error: isSuccess ?? ""));
     }
+  }
+
+  FutureOr<void> _updateFavorite(
+      FavoriteUpdateEvent event, Emitter<FavoriteState> emit) {
+    emit(FavoriteLoadingState());
+    emit(FavoriteSuccessState(doctorsDTO: doctors));
   }
 }

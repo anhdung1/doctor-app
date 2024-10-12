@@ -9,6 +9,7 @@ import com.example.demo_10.model.Roles;
 import com.example.demo_10.model.UserInfo;
 import com.example.demo_10.model.Users;
 import com.example.demo_10.repository.RolesRepository;
+import com.example.demo_10.repository.UserInfoRepository;
 import com.example.demo_10.repository.UsersRepository;
 @Service
 public class UsersService {
@@ -16,7 +17,8 @@ public class UsersService {
 	private  RolesRepository rolesRepository;
 	@Autowired
     private UsersRepository usersRepository;
-
+	@Autowired
+	private UserInfoRepository userInfoRepository;
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String saveUser(String rawPassword) {
@@ -50,4 +52,26 @@ public class UsersService {
     	Users user=usersRepository.findByUsername(username);
     	return user.getUserInfo();
     }
+    public UserInfo updateUserInfo(String username,UserInfo userInfo) {
+    	Users user=usersRepository.findByUsername(username);
+    	UserInfo userInfoUpdate=userInfoRepository.findByUser(user);
+    	if(userInfoUpdate==null) {
+    		userInfoUpdate=userInfo;
+        	userInfoUpdate.setUser(user);
+        	 user.setUserInfo(userInfoUpdate);
+        	 usersRepository.save(user);
+
+    	}else {
+    		userInfoUpdate.setAddress(userInfo.getAddress());
+    		userInfoUpdate.setEmail(userInfo.getEmail());
+    		userInfoUpdate.setFirstName(userInfo.getFirstName());
+    		userInfoUpdate.setLastName(userInfo.getLastName());
+
+    		userInfoUpdate.setPhoneNumber(userInfo.getPhoneNumber());
+        	userInfoUpdate.setUser(user);
+        	 usersRepository.save(user);
+    	}
+    	 return user.getUserInfo();
+    }
+    
 }

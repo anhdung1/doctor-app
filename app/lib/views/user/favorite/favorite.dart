@@ -10,26 +10,14 @@ import 'package:app/views/widgets/clip_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Favorite extends StatelessWidget {
+class Favorite extends StatefulWidget {
   const Favorite({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FavoriteBloc([])..add(FavoriteStartedEvent()),
-      child: const FavoritePage(),
-    );
-  }
+  State<Favorite> createState() => _FavoriteState();
 }
 
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
-
-  @override
-  State<FavoritePage> createState() => _FavoritePageState();
-}
-
-class _FavoritePageState extends State<FavoritePage> {
+class _FavoriteState extends State<Favorite> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;

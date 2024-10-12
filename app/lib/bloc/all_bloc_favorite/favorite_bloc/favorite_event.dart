@@ -15,3 +15,5 @@ class FavoriteEditEvent extends FavoriteEvent {
   @override
   List<Object?> get props => [isFavorite, doctorId];
 }
+
+class FavoriteUpdateEvent extends FavoriteEvent {}

@@ -21,7 +21,7 @@ class LoginService {
         }),
       );
       if (response.statusCode == 200) {
-        UserRespone login = UserRespone.toMap(
+        UserResponse login = UserResponse.toMap(
             jsonDecode(response.body) as Map<String, dynamic>);
         saveToken(login.token);
 

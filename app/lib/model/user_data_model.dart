@@ -20,18 +20,18 @@ class UserDataModel implements JsonSerializable {
   factory UserDataModel.fromJson(Map<String, dynamic> map) {
     return UserDataModel(
         lastName: map["lastName"] ?? "",
-        firstName: map["lastName"] ?? "",
-        id: map["lastName"] ?? -1,
-        phoneNumber: map["lastName"] ?? "",
-        image: map["lastName"] ?? "",
-        email: map["lastName"] ?? "",
-        address: map["lastName"] ?? "");
+        firstName: map["firstName"] ?? "",
+        id: map["id"] ?? -1,
+        phoneNumber: map["phoneNumber"] ?? "",
+        image: map["image"] ?? "",
+        email: map["email"] ?? "",
+        address: map["address"] ?? "");
   }
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'lastname': lastName,
-      'firstname': firstName,
+      'id': id.toString(),
+      'lastName': lastName,
+      'firstName': firstName,
       'phoneNumber': phoneNumber,
       "image": image,
       "email": email,

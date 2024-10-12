@@ -24,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginService loginService = LoginService();
       var result = await loginService.login(event.username, event.password);
 
-      if (result is UserRespone) {
+      if (result is UserResponse) {
         Map<String, dynamic> decodedToken = JwtDecoder.decode(result.token);
 
         if (decodedToken['role'] == "ADMIN") {

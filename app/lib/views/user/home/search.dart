@@ -1,14 +1,14 @@
 import 'dart:ui';
 
+import 'package:app/bloc/all_bloc_favorite/favorite_bloc/favorite_bloc.dart';
 import 'package:app/bloc/all_bloc_home/search_bloc/search_bloc.dart';
 import 'package:app/bloc/all_bloc_home/search_bloc/search_event.dart';
 import 'package:app/bloc/all_bloc_home/search_bloc/search_state.dart';
 import 'package:app/model/doctors_dto_data_model.dart';
-
 import 'package:app/views/user/home/select_time.dart';
 import 'package:app/views/variables/variable.dart';
 import 'package:app/views/widgets/app_bar.dart';
-import 'package:app/views/widgets/icon_button_favorite.dart';
+import 'package:app/views/widgets/button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -216,8 +216,8 @@ class _SearchPageState extends State<SearchPage> {
                     child: Container(
                         padding: const EdgeInsets.only(top: 6),
                         alignment: Alignment.centerRight,
-                        child:
-                            favoriteButton(context, index, state, doctorsDTO)),
+                        child: favoriteButton(context, index, state,
+                            context.read<FavoriteBloc>().state, doctorsDTO)),
                   )
                 ],
               ),

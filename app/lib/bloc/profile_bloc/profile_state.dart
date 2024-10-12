@@ -10,6 +10,12 @@ class ProfileSuccessState extends ProfileState {
   ProfileSuccessState({required this.user});
 }
 
+class ProfileUpdateSuccessState extends ProfileState {
+  final UserDataModel user;
+
+  ProfileUpdateSuccessState({required this.user});
+}
+
 class ProfileErrorState extends ProfileState {
   final String error;
 

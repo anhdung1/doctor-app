@@ -9,7 +9,7 @@ abstract class LoginState extends Equatable {
 class LoginAdminSuccessState extends LoginState {}
 
 class LoginUserSuccessState extends LoginState {
-  final UserRespone login;
+  final UserResponse login;
 
   LoginUserSuccessState({required this.login});
 }

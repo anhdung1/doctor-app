@@ -92,9 +92,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         Text(
           "$number. ",
           style: TextStyle(
-              fontSize: 14,
-              color: Colors.green[400],
-              fontWeight: FontWeight.w600),
+              fontSize: 14, color: colorButton, fontWeight: FontWeight.w600),
         ),
         Expanded(
           child: Text(
@@ -223,7 +221,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Icon(
                                       Icons.attach_money_rounded,
-                                      color: Colors.green[400],
+                                      color: colorButton,
                                       size: 16,
                                     ),
                                   ),
@@ -256,7 +254,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         width: 130,
                         height: 32,
                         decoration: BoxDecoration(
-                            color: Colors.green[400],
+                            color: colorButton,
                             borderRadius: BorderRadius.circular(3)),
                         child: const Text(
                           "Book Now",

@@ -58,10 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => MyHome(
-                  userResponse: state.login,
-                ),
-              ),
+                  builder: (context) => MyHome(
+                      lastName: state.login.lastName,
+                      firstName: state.login.firstName,
+                      imageUrl: state.login.image)),
               ModalRoute.withName('/'),
             );
           }
