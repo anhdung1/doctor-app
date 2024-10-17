@@ -5,7 +5,6 @@ import 'package:app/views/user/my_home.dart';
 import 'package:app/views/user/signup.dart';
 import 'package:app/views/variables/variable.dart';
 import 'package:app/views/widgets/auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,11 +28,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  String errorMassage = "";
-  LoginBloc parentBloc = LoginBloc();
-  bool loading = false;
+  final TextEditingController _usernameController =
+      TextEditingController(text: "");
+  final TextEditingController _passwordController =
+      TextEditingController(text: "");
+  String errorMessage = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,26 +42,26 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is SigupState) {
             return const Signup();
           }
-
-          return initLoginState(errorMassage, loading);
+          return _initLoginState(state);
         },
         listener: (context, state) {
           if (state is LoginLoadingState) {
-            loading = true;
-            errorMassage = "";
+            errorMessage = "";
           }
           if (state is LoginFailureState) {
-            errorMassage = state.error;
-            loading = false;
+            errorMessage = state.error;
           }
           if (state is LoginUserSuccessState) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (context) => MyHome(
-                      lastName: state.login.lastName,
-                      firstName: state.login.firstName,
-                      imageUrl: state.login.image)),
+                builder: (context) => MyHome(
+                  lastName: state.login.lastName,
+                  firstName: state.login.firstName,
+                  imageUrl: state.login.image,
+                  id: state.login.id,
+                ),
+              ),
               ModalRoute.withName('/'),
             );
           }
@@ -70,13 +70,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  initLoginState(error, loading) {
+  Widget _initLoginState(LoginState state) {
     return Stack(
       children: [
         Container(
-          padding: const EdgeInsets.only(left: 15, right: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(gradient: gradient),
+          decoration: homeTheme,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,10 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     children: [
                       loginWith("assets/images/google-symbol.png", "Google"),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      loginWith("assets/images/facebook.png", "Facebook")
+                      const SizedBox(width: 10),
+                      loginWith("assets/images/facebook.png", "Facebook"),
                     ],
                   ),
                 ),
@@ -99,59 +97,65 @@ class _LoginScreenState extends State<LoginScreen> {
                     Icons.account_circle),
                 textField(
                     _passwordController, "Password", true, Icons.lock_rounded),
-                Align(
-                  alignment: AlignmentDirectional.bottomStart,
-                  child: error == ""
-                      ? const SizedBox()
-                      : Text(
-                          error,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                ),
+                _errorMessage(),
                 Padding(
                   padding: const EdgeInsets.only(top: 35, bottom: 20),
                   child: InkWell(
                     onTap: () {
+                      // Kiểm tra dữ liệu đầu vào trước khi gửi sự kiện
+
                       context.read<LoginBloc>().add(LoginCheckEvent(
-                          username: _usernameController.text,
-                          password: _passwordController.text,
-                          parentBloc: parentBloc));
+                            username: _usernameController.text,
+                            password: _passwordController.text,
+                          ));
                     },
                     child: Container(
                       height: 54,
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: colorButton),
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
+                        borderRadius: BorderRadius.circular(7),
+                        color: colorButton,
                       ),
+                      child: const Text("Login",
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
-                textButton(() {}, "Forgor password"),
+                textButton(() {}, "Forgot password"),
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 textButton(() {
                   context.read<LoginBloc>().add(ShowSignUpPageEvent());
-                }, "Don’t have an account? Join us")
+                }, "Don’t have an account? Join us"),
               ],
             ),
           ),
         ),
-        if (loading)
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.black12,
-            child: const Center(
-              child: CircularProgressIndicator(
-                strokeAlign: 3,
-              ),
-            ),
-          )
+        if (state is LoginLoadingState) _loadingIndicator(),
       ],
+    );
+  }
+
+  Widget _loadingIndicator() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      color: Colors.black12,
+      child: const Center(
+        child: CircularProgressIndicator(strokeWidth: 3),
+      ),
+    );
+  }
+
+  Widget _errorMessage() {
+    return Align(
+      alignment: AlignmentDirectional.bottomStart,
+      child: errorMessage.isEmpty
+          ? const SizedBox()
+          : Text(
+              errorMessage,
+              style: const TextStyle(color: Colors.red),
+            ),
     );
   }
 }

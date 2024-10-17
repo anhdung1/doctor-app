@@ -41,7 +41,7 @@ class _FavoriteState extends State<Favorite> {
                     builder: (context, state) {
                       if (state is FavoriteSuccessState) {
                         return SizedBox(
-                          height: MediaQuery.of(context).size.height - 56,
+                          height: MediaQuery.of(context).size.height - 140,
                           child: ScrollConfiguration(
                             behavior: ScrollConfiguration.of(context).copyWith(
                                 dragDevices: {

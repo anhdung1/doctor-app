@@ -33,6 +33,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (decodedToken['role'] == "USER") {
           return emit(LoginUserSuccessState(login: result));
         }
+        if (decodedToken['role'] == "DOCTOR") {
+          return emit(LoginDoctorSuccessState(login: result));
+        }
       }
 
       if (result is String) {

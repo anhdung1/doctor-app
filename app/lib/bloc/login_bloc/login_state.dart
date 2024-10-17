@@ -14,6 +14,12 @@ class LoginUserSuccessState extends LoginState {
   LoginUserSuccessState({required this.login});
 }
 
+class LoginDoctorSuccessState extends LoginState {
+  final UserResponse login;
+
+  LoginDoctorSuccessState({required this.login});
+}
+
 class LoginFailureState extends LoginState {
   final String error;
 

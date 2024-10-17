@@ -5,15 +5,16 @@ public class LoginResponse {
     private String image;
     private String firstName;
     private String lastName;
-    
+    private Long id;
     private String username;
 
-    public LoginResponse(String token, String username, String image,String lastName,String firstName) {
+    public LoginResponse(String token, String username, String image,String lastName,String firstName,Long id) {
         this.token = token;
         this.firstName=firstName;
         this.image=image;
         this.username = username;
         this.lastName = lastName;
+        this.id=id;
     }
 
     public String getUsername() {
@@ -34,6 +35,14 @@ public class LoginResponse {
 
 	public String getFirstName() {
 		return firstName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

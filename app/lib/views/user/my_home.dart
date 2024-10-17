@@ -4,25 +4,25 @@ import 'package:app/bloc/all_bloc_home/doctor_bloc/doctor_bloc.dart';
 import 'package:app/bloc/all_bloc_home/doctor_bloc/doctor_event.dart';
 import 'package:app/bloc/all_bloc_home/home_page_bloc/home_page_bloc.dart';
 import 'package:app/bloc/all_bloc_home/home_page_bloc/home_page_event.dart';
-
 import 'package:app/bloc/all_bloc_home/home_page_bloc/home_page_state.dart';
-
 import 'package:app/views/user/favorite/favorite.dart';
 import 'package:app/views/user/home/home.dart';
+import 'package:app/views/user/list_doctors_chat.dart';
 import 'package:app/views/user/user_info/user_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyHome extends StatelessWidget {
-  const MyHome({
-    super.key,
-    required this.lastName,
-    required this.firstName,
-    required this.imageUrl,
-  });
+  const MyHome(
+      {super.key,
+      required this.lastName,
+      required this.firstName,
+      required this.imageUrl,
+      required this.id});
   final String lastName;
   final String firstName;
   final String imageUrl;
+  final int id;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -38,7 +38,11 @@ class MyHome extends StatelessWidget {
           )
         ],
         child: MyHomePage(
-            lastName: lastName, firstName: firstName, imageUrl: imageUrl));
+          lastName: lastName,
+          firstName: firstName,
+          imageUrl: imageUrl,
+          id: id,
+        ));
   }
 }
 
@@ -47,10 +51,12 @@ class MyHomePage extends StatefulWidget {
       {super.key,
       required this.lastName,
       required this.firstName,
-      required this.imageUrl});
+      required this.imageUrl,
+      required this.id});
   final String lastName;
   final String firstName;
   final String imageUrl;
+  final int id;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -81,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return BlocBuilder<HomePageBloc, HomePageState>(
       builder: (context, state) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           extendBody: true,
           body: Stack(
             alignment: AlignmentDirectional.bottomCenter,
@@ -95,7 +102,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const Favorite(),
                 const SizedBox(),
-                const SizedBox(),
+                // const ListDoctorsChat()
+                BlocProvider(
+                  create: (_) => DoctorBloc()..add(DoctorGetAllEvent()),
+                  child: const ListDoctorsChat(),
+                ),
               ][state.pageIndex],
               SizedBox(
                 height: 90,

@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-	
+    
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
     
@@ -32,14 +32,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String username = null;
         String token = null;
+        	
 
-        // Kiểm tra header Authorization và tách token
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(token);
+        
+        if (isWebSocketRequest(request)) {
+  
+        	String queryToken = request.getParameter("token");
+            if (queryToken != null) {
+                token = queryToken;
+                username = jwtUtil.extractUsername(token);
+            }
+        } else {
+  
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                token = authorizationHeader.substring(7);
+                username = jwtUtil.extractUsername(token);
+            }
         }
 
-        // Kiểm tra tính hợp lệ của token và xác thực người dùng
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtUtil.validateToken(token, userDetails.getUsername())) {
@@ -49,6 +60,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
+
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isWebSocketRequest(HttpServletRequest request) {
+   
+        return "GET".equalsIgnoreCase(request.getMethod()) && request.getRequestURI().startsWith("/chat-websocket");
+    }
+
+    @SuppressWarnings("unused")
+	private String extractTokenFromQuery(HttpServletRequest request) {
+
+        String query = request.getQueryString();
+        if (query != null) {
+            for (String param : query.split("&")) {
+                String[] pair = param.split("=");
+                if ("token".equals(pair[0])) {
+                    return pair.length > 1 ? pair[1] : null;
+                }
+            }
+        }
+        return null;
     }
 }

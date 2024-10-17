@@ -45,7 +45,7 @@ public class AuthService {
 	 }
 	 public LoginResponse responseUser(String token,String username) {
 		 Users user= usersRepository.findByUsername(username);
-		 return new LoginResponse(token,user.getUsername(), user.getUserInfo().getImage(),user.getUserInfo().getLastName(),user.getUserInfo().getFirstName());
+		 return new LoginResponse(token,user.getUsername(), user.getUserInfo().getImage(),user.getUserInfo().getLastName(),user.getUserInfo().getFirstName(),user.getId());
 	 }
 	 
 }

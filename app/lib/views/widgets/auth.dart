@@ -86,6 +86,15 @@ textField(controller, hintText, hide, prefixIcon) {
     // width: MediaQuery.of(context).size.width - 30,
     height: 54,
     child: TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      enableSuggestions: false,
+      autocorrect: false,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter username";
+        }
+        return null;
+      },
       obscureText: hide,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 20),

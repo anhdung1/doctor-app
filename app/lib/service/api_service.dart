@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:app/http_error_code.dart';
 import 'package:app/service/json_serializable.dart';
 import 'package:app/service/json_to_list.dart';
+import 'package:app/service/result.dart';
 import 'package:app/service/token.dart';
+import 'package:app/views/variables/variable.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -17,17 +19,17 @@ class ApiService {
 
   static final client = http.Client();
   static getMapping(String url) async {
-    return await client.get(Uri.parse("http://localhost:8080/$url"),
+    return await client.get(Uri.parse("http://$ip:8080/$url"),
         headers: headers(await getToken()));
   }
 
   static postMapping(String url, body) async {
-    return await client.post(Uri.parse("http://localhost:8080/$url"),
+    return await client.post(Uri.parse("http://$ip:8080/$url"),
         headers: headers(await getToken()), body: jsonEncode(body));
   }
 
   static putMapping(String url, body) async {
-    return await client.put(Uri.parse("http://localhost:8080/$url"),
+    return await client.put(Uri.parse("http://$ip:8080/$url"),
         headers: headers(await getToken()), body: jsonEncode(body));
   }
 
@@ -46,34 +48,44 @@ class ApiService {
     }
   }
 
-  static Future jsonHandleGetMapping<T extends JsonSerializable>(
-      T Function(Map<String, dynamic>) fromMap, String url) async {
+  static Future<Result<List<T>>>
+      jsonHandleGetMapping<T extends JsonSerializable>(
+          T Function(Map<String, dynamic>) fromMap, String url) async {
     try {
       var response = await ApiService.getMapping(url);
 
       if (response.statusCode == 200) {
-        return JsonToListService.jsonToList(response, fromMap);
+        var result = JsonToListService.jsonToList(response, fromMap);
+
+        var a = Result(data: result);
+        return a;
       } else {
-        return "Failed to load data: ${getErrorMessage(response.statusCode)}";
+        return Result(
+            error:
+                "Failed to load data: ${getErrorMessage(response.statusCode)}");
       }
     } catch (e) {
       log("Error occurred: $e");
-      return ("Error fetching data");
+      return Result(error: "$e");
     }
   }
 
-  static Future jsonHandlePostMapping<T extends JsonSerializable>(
-      T Function(Map<String, dynamic>) fromMap, String url, body) async {
+  static Future<Result<List<T>>>
+      jsonHandlePostMapping<T extends JsonSerializable>(
+          T Function(Map<String, dynamic>) fromMap, String url, body) async {
     try {
       var response = await ApiService.postMapping(url, body);
       if (response.statusCode == 200) {
-        return JsonToListService.jsonToList(response, fromMap);
+        var result = JsonToListService.jsonToList(response, fromMap);
+        return Result(data: result);
       } else {
-        return "Failed to load data: ${getErrorMessage(response.statusCode)}";
+        return Result(
+            error:
+                "Failed to load data: ${getErrorMessage(response.statusCode)}");
       }
     } catch (e) {
       log("Error occurred: $e");
-      return ("Error fetching data");
+      return Result(error: "$e");
     }
   }
 }

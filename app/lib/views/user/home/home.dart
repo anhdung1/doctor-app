@@ -52,6 +52,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     var screen = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         height: screen.height,
         padding: const EdgeInsets.only(bottom: 85),

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:app/http_error_code.dart';
+import 'package:app/views/variables/variable.dart';
 import 'package:http/http.dart' as http;
 
 class SignupService {
-  final String _baseUrl = 'http://localhost:8080/api/auth';
+  final String _baseUrl = 'http://$ip:8080/api/auth';
   Future checkUsername(String password, String username) async {
     try {
       final response = await http.post(

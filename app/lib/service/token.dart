@@ -14,3 +14,13 @@ Future<void> removeToken() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove('jwt_token');
 }
+
+Future<void> saveId(int id) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('id', id);
+}
+
+Future<int?> getId() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getInt('id');
+}

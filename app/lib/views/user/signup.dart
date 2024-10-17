@@ -110,7 +110,7 @@ class _SignupScreenState extends State<SignupScreen> {
         Container(
           padding: const EdgeInsets.only(left: 15, right: 15),
           height: MediaQuery.of(context).size.height + 38,
-          decoration: BoxDecoration(gradient: gradient),
+          decoration: homeTheme,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -211,9 +211,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
-                textButton(() {
-                  context.read<SignupBloc>().add(ShowLoginEvent());
-                }, "Have an account? Log in")
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: textButton(() {
+                    context.read<SignupBloc>().add(ShowLoginEvent());
+                  }, "Have an account? Log in"),
+                )
               ],
             ),
           ),

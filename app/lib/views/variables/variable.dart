@@ -2,29 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-var gradient = const LinearGradient(
-    colors: [
-      Color.fromRGBO(220, 229, 255, 1),
-      Colors.white,
-      Colors.white,
-      Color.fromRGBO(220, 229, 255, 1),
-    ],
-    stops: [
-      0.1,
-      0.4,
-      0.6,
-      0.9
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    transform: GradientRotation(-0.3));
 Color colorButton = const Color.fromARGB(255, 33, 163, 133);
 var homeTheme = const BoxDecoration(
     gradient: LinearGradient(colors: [
-  Color.fromRGBO(207, 240, 255, 0.718),
-  Color.fromRGBO(0, 0, 0, 0.08),
-  Color.fromRGBO(0, 0, 0, 0.08),
-  Color.fromRGBO(207, 240, 255, 0.718),
+  Color.fromRGBO(178, 255, 236, 0.718),
+  Color.fromRGBO(0, 0, 0, 0.04),
+  Color.fromRGBO(0, 0, 0, 0.04),
+  Color.fromRGBO(178, 255, 236, 0.718),
 ], stops: [
   0,
   0.4,
@@ -36,3 +20,4 @@ Set<PointerDeviceKind> dragDevices = {
   PointerDeviceKind.mouse,
   PointerDeviceKind.touch
 };
+String ip = "192.168.1.5";

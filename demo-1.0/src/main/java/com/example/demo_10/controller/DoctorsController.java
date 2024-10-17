@@ -40,6 +40,15 @@ public class DoctorsController {
 		
 		return ResponseEntity.ok(doctorsDTOService.transToDoctorsDTO(doctors,usersService.getUsername()));
 	}
+	@GetMapping("/all-doctors")
+	public ResponseEntity<List<DoctorsDTO>> getAllDoctors(){
+		List<Doctors> doctors=doctorsRepository.findAll();
+		if(doctors.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(doctorsDTOService.transToDoctorsDTO(doctors,usersService.getUsername()));
+	}
 	@GetMapping("/search")
 	public ResponseEntity<List<DoctorsDTO>> searchDoctors(@RequestParam String category){
 
