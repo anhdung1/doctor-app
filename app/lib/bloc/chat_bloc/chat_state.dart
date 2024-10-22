@@ -18,14 +18,10 @@ class ChatSuccessState extends ChatState {
 
 class ChatLoadingState extends ChatState {}
 
+class ChatHistorySuccessState extends ChatState {}
+
 class ChatFailureState extends ChatState {
   final String error;
 
   ChatFailureState({required this.error});
-}
-
-class ChatSendSuccessState extends ChatState {
-  final ChatDataModel message;
-
-  ChatSendSuccessState({required this.message});
 }

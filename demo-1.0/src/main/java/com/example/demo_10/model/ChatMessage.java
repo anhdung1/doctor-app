@@ -3,7 +3,6 @@ package com.example.demo_10.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -69,5 +68,4 @@ public class ChatMessage {
 		this.receiver = receiver;
 	}
 
-    // Constructors, Getters, and Setters
 }

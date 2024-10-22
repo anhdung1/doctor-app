@@ -3,7 +3,6 @@ import 'package:app/bloc/all_bloc_home/doctor_bloc/doctor_bloc.dart';
 import 'package:app/bloc/all_bloc_home/doctor_bloc/doctor_state.dart';
 import 'package:app/views/chat_screen.dart';
 import 'package:app/views/variables/variable.dart';
-import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -59,8 +58,8 @@ class ListDoctorsChat extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                      receiverId: state.doctorsDTO[index].doctors.id),
+                  builder: (context) =>
+                      ChatScreen(receiver: state.doctorsDTO[index].doctors),
                 ));
           },
           child: Container(
@@ -114,37 +113,9 @@ class ListDoctorsChat extends StatelessWidget {
                                   color: Colors.green[500],
                                   fontWeight: FontWeight.w500),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: RatingBar.readOnly(
-                                  initialRating:
-                                      state.doctorsDTO[index].doctors.rate,
-                                  filledIcon: Icons.star,
-                                  size: 11,
-                                  emptyIcon: Icons.star_outline_outlined),
-                            )
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 1),
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {},
-                            child: state.doctorsDTO[index].isFavorite
-                                ? const Icon(
-                                    Icons.favorite,
-                                    size: 14,
-                                    color: Colors.red,
-                                  )
-                                : const Icon(
-                                    Icons.favorite_border,
-                                    size: 14,
-                                  ),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ],

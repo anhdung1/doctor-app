@@ -6,6 +6,8 @@ class ChatConnectEvent extends ChatEvent {
   ChatConnectEvent({required this.receiverId});
 }
 
+class ChatDisconnectEvent extends ChatEvent {}
+
 class ChatSendEvent extends ChatEvent {
   final int receiverId;
 
@@ -17,6 +19,7 @@ class ChatReloadEvent extends ChatEvent {}
 
 class ChatGetHistoryEvent extends ChatEvent {
   final int receiverId;
-
-  ChatGetHistoryEvent({required this.receiverId});
+  ChatGetHistoryEvent({
+    required this.receiverId,
+  });
 }

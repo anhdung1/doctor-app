@@ -17,7 +17,7 @@ class UserDataModel implements JsonSerializable {
       required this.image,
       required this.email,
       required this.address});
-  factory UserDataModel.fromJson(Map<String, dynamic> map) {
+  factory UserDataModel.fromMap(Map<String, dynamic> map) {
     return UserDataModel(
         lastName: map["lastName"] ?? "",
         firstName: map["firstName"] ?? "",

@@ -56,10 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => MyHome(
-                  lastName: state.login.lastName,
-                  firstName: state.login.firstName,
-                  imageUrl: state.login.image,
-                  id: state.login.id,
+                  user: state.login.userInfo,
                 ),
               ),
               ModalRoute.withName('/'),

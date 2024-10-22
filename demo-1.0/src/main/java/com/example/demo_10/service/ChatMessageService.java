@@ -1,13 +1,14 @@
 package com.example.demo_10.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_10.model.ChatMessage;
-
+import com.example.demo_10.model.Doctors;
 import com.example.demo_10.model.Users;
 import com.example.demo_10.model.dto.ChatDTO;
 import com.example.demo_10.model.dto.ChatRequest;
@@ -18,7 +19,7 @@ import com.example.demo_10.repository.UsersRepository;
 @Service
 public class ChatMessageService {
 	@Autowired
-	private UsersRepository userRepository;
+	private UsersRepository usersRepository;
 	@Autowired
 	private ChatMessageRepository  chatMessageRepository;
 	public ChatDTO saveMessage(ChatRequest chatRequest) {
@@ -27,8 +28,8 @@ public class ChatMessageService {
 //		System.out.println("end");
 		ChatMessage newChatMessage=new ChatMessage();
 		newChatMessage.setTimestamp(LocalDateTime.now());
-		Users sender=userRepository.findById(chatRequest.getSenderId()).orElseThrow();
-		Users receiver=userRepository.findById(chatRequest.getReceiverId()).orElseThrow();
+		Users sender=usersRepository.findById(chatRequest.getSenderId()).orElseThrow();
+		Users receiver=usersRepository.findById(chatRequest.getReceiverId()).orElseThrow();
 		newChatMessage.setReceiver(receiver);
 		newChatMessage.setSender(sender);
 		newChatMessage.setContent(chatRequest.getContent());
@@ -56,5 +57,25 @@ public class ChatMessageService {
 		}
 		
 		return listChat;
+	}
+	public List<Doctors> getListDoctorMessage(String username){
+		Users user=usersRepository.findByUsername(username);
+		  if (user != null && user.getChatReceiver() != null) {
+		        List<Doctors> arrayList = new ArrayList<>();
+		        for (Users newUser : user.getChatReceiver()) {
+		            
+		            arrayList.add(newUser.getDoctor());
+		        }
+		        return arrayList;
+		    }
+		    return Collections.emptyList();
+	}
+	public void createMessagePparticipants(Long doctorId,String username) {
+		Users doctor=usersRepository.findReceiverById(doctorId);
+		
+		if(doctor==null) {
+			Users user=usersRepository.findByUsername(username);
+			user.getChatReceiver().add(doctor);
+		}
 	}
 }

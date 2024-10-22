@@ -26,7 +26,7 @@ class LoginService {
             jsonDecode(utf8.decode(response.bodyBytes))
                 as Map<String, dynamic>);
         saveToken(login.token);
-        saveId(login.id);
+        saveId(login.userInfo.id);
         return login;
       } else if (response.statusCode == 401) {
         return response.body;

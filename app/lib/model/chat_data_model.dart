@@ -22,5 +22,6 @@ class ChatDataModel with EquatableMixin implements JsonSerializable {
         isSentByCurrentUser: (map["senderId"] ?? -1) == currentUserId);
   }
   @override
-  List<Object?> get props => [content, timestamp];
+  List<Object?> get props =>
+      [content, timestamp, senderId, receiverId, isSentByCurrentUser];
 }

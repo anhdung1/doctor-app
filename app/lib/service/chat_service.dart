@@ -13,11 +13,11 @@ import 'package:stomp_dart_client/stomp_dart_client.dart';
 class ChatService {
   late StompClient stompClient;
   Function(ChatDataModel)? onMessageReceived;
-  Future<Result> fetchChatHistory(int receiverId) async {
+  Future<Result> fetchChatHistory(int receiverId, int page) async {
     List<ChatDataModel> listChat = [];
     try {
       Response response = await ApiService.getMapping(
-          "chat/history?receiverId=$receiverId&senderId=${await getId() ?? -1}");
+          "chat/history?receiverId=$receiverId&page=$page&senderId=${await getId() ?? -1}");
       if (response.statusCode == 200) {
         List result = jsonDecode(utf8.decode(response.bodyBytes));
         for (int i = 0; i < result.length; i++) {
@@ -71,11 +71,9 @@ class ChatService {
         "senderId":"$senderId",
         "type": "CHAT"
       }''',
-      // headers: ApiService.headers(await getToken())
     );
   }
 
-  // Ngắt kết nối
   void disconnect() {
     stompClient.deactivate();
     log('Disconnected from WebSocket');

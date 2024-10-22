@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_10.model.Doctors;
+import com.example.demo_10.model.UserInfo;
 import com.example.demo_10.model.Users;
 import com.example.demo_10.model.dto.DoctorsDTO;
 import com.example.demo_10.repository.DoctorsRepository;
+import com.example.demo_10.repository.UserInfoRepository;
 import com.example.demo_10.repository.UsersRepository;
 import java.util.Collections;
 
@@ -18,17 +20,20 @@ import java.util.Collections;
 public class FavoriteService {
 	@Autowired
 	private UsersRepository usersRepository;
+	@Autowired
+	private UserInfoRepository userInfoRepository;
 	@Autowired 
 	private DoctorsRepository doctorsRepository;
 	public Object favorite(String username, Long doctorId,boolean isFavorite) {
-		 Users user = usersRepository.findByUsername(username);
+		Users user=usersRepository.findByUsername(username);
+		 UserInfo userInfo = userInfoRepository.findByUser(user);
 		    Doctors doctor = doctorsRepository.findById(doctorId).orElse(null);
 
-		    if (user != null && doctor != null) {
+		    if (userInfo != null && doctor != null) {
 		        if(!isFavorite) {
-		        	user.getFavoriteDoctors().add(doctor);		 
+		        	userInfo.getFavoriteDoctors().add(doctor);		 
 		        }else {
-		        	user.getFavoriteDoctors().remove(doctor); 		       
+		        	userInfo.getFavoriteDoctors().remove(doctor); 		       
 		        }
 		        usersRepository.save(user); 
 		        DoctorsDTO doctorDTO=new DoctorsDTO(doctor, !isFavorite);
@@ -37,10 +42,10 @@ public class FavoriteService {
 		    return false;
 	}
 	public List<DoctorsDTO> getFavoriteDoctors(String username) {
-	    Users user = usersRepository.findByUsername(username);
-	    if (user != null && user.getFavoriteDoctors() != null) {
+	    UserInfo userInfo = userInfoRepository.findUserInfoByUsername(username);
+	    if (userInfo != null && userInfo.getFavoriteDoctors() != null) {
 	        List<DoctorsDTO> arrayListDTO = new ArrayList<>();
-	        for (Doctors doctor : user.getFavoriteDoctors()) {
+	        for (Doctors doctor : userInfo.getFavoriteDoctors()) {
 	            DoctorsDTO doctorsDTO = new DoctorsDTO(doctor, true);
 	            arrayListDTO.add(doctorsDTO);
 	        }

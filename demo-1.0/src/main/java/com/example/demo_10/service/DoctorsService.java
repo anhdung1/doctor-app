@@ -5,25 +5,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_10.model.Doctors;
-import com.example.demo_10.model.Users;
+import com.example.demo_10.model.UserInfo;
+
 import com.example.demo_10.repository.DoctorsRepository;
-import com.example.demo_10.repository.UsersRepository;
+import com.example.demo_10.repository.UserInfoRepository;
+
 
 @Service
 public class DoctorsService {
 	@Autowired
-	private UsersRepository usersRepository;
+	private UserInfoRepository userInfoRepository;
 	@Autowired
 	private DoctorsRepository doctorsRepository;
 	public boolean removeFavoriteDoctor(String username, Long doctorId) {
-	    Users user = usersRepository.findByUsername(username);
+	    UserInfo useInfo = userInfoRepository.findUserInfoByUsername(username);
 	    Doctors doctor = doctorsRepository.findById(doctorId).orElse(null);
 
-	    if (user != null && doctor != null) {
+	    if (useInfo != null && doctor != null) {
 	 
-	        boolean removed = user.getFavoriteDoctors().remove(doctor);
+	        boolean removed = useInfo.getFavoriteDoctors().remove(doctor);
 	        if (removed) {
-	            usersRepository.save(user); 
+	        	userInfoRepository.save(useInfo); 
 	            return true;
 	        } else {
 	            return false;

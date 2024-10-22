@@ -72,10 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
             context,
             MaterialPageRoute(
               builder: (context) => MyHome(
-                lastName: state.user.lastName,
-                firstName: state.user.firstName,
-                imageUrl: state.user.image,
-                id: state.user.id,
+                user: state.user,
               ),
             ),
             ModalRoute.withName('/'),

@@ -5,6 +5,7 @@ import 'package:app/bloc/all_bloc_home/doctor_bloc/doctor_event.dart';
 import 'package:app/bloc/all_bloc_home/home_page_bloc/home_page_bloc.dart';
 import 'package:app/bloc/all_bloc_home/home_page_bloc/home_page_event.dart';
 import 'package:app/bloc/all_bloc_home/home_page_bloc/home_page_state.dart';
+import 'package:app/model/user_data_model.dart';
 import 'package:app/views/user/favorite/favorite.dart';
 import 'package:app/views/user/home/home.dart';
 import 'package:app/views/user/list_doctors_chat.dart';
@@ -13,16 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyHome extends StatelessWidget {
-  const MyHome(
-      {super.key,
-      required this.lastName,
-      required this.firstName,
-      required this.imageUrl,
-      required this.id});
-  final String lastName;
-  final String firstName;
-  final String imageUrl;
-  final int id;
+  const MyHome({
+    super.key,
+    required this.user,
+  });
+  final UserDataModel user;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -38,26 +34,18 @@ class MyHome extends StatelessWidget {
           )
         ],
         child: MyHomePage(
-          lastName: lastName,
-          firstName: firstName,
-          imageUrl: imageUrl,
-          id: id,
+          user: user,
         ));
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage(
-      {super.key,
-      required this.lastName,
-      required this.firstName,
-      required this.imageUrl,
-      required this.id});
-  final String lastName;
-  final String firstName;
-  final String imageUrl;
-  final int id;
+  const MyHomePage({
+    super.key,
+    required this.user,
+  });
 
+  final UserDataModel user;
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -94,9 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               [
                 Home(
-                  lastName: widget.lastName,
-                  firstName: widget.firstName,
-                  imageUrl: widget.imageUrl,
+                  lastName: widget.user.lastName,
+                  firstName: widget.user.firstName,
+                  imageUrl: widget.user.image,
                   show: isEnterOtp2,
                   onToggle: onToggle,
                 ),
@@ -150,9 +138,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               UserMenu(
-                  lastName: widget.lastName,
-                  firstName: widget.firstName,
-                  imageUrl: widget.imageUrl,
+                  lastName: widget.user.lastName,
+                  firstName: widget.user.firstName,
+                  imageUrl: widget.user.image,
                   show: isEnterOtp2,
                   onToggle: onToggle)
             ],

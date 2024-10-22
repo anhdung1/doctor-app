@@ -11,12 +11,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final List<ChatDataModel> listMessage = [];
+  int page = 0;
   ChatService chatService = ChatService();
   ChatBloc() : super(ChatIntitalState()) {
     on<ChatConnectEvent>(_connect);
     on<ChatSendEvent>(_sendMessage);
     on<ChatGetHistoryEvent>(_getHistory);
     on<ChatReloadEvent>(_reload);
+    on<ChatDisconnectEvent>(_disconnect);
   }
 
   FutureOr<void> _connect(
@@ -29,7 +31,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           : "${senderId}_${event.receiverId}";
       await chatService.connectToRoom(roomId);
       chatService.onMessageReceived;
-      Result chatHistory = await chatService.fetchChatHistory(event.receiverId);
+      Result chatHistory =
+          await chatService.fetchChatHistory(event.receiverId, 0);
 
       if (chatHistory.isSuccess) {
         listMessage.addAll(chatHistory.data);
@@ -67,10 +70,27 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   FutureOr<void> _getHistory(
-      ChatGetHistoryEvent event, Emitter<ChatState> emit) async {}
+      ChatGetHistoryEvent event, Emitter<ChatState> emit) async {
+    emit(ChatLoadingState());
+    page = page + 1;
+    Result chatHistory =
+        await chatService.fetchChatHistory(event.receiverId, page);
+
+    if (chatHistory.isSuccess) {
+      listMessage.insertAll(0, chatHistory.data);
+      emit(ChatHistorySuccessState());
+      emit(ChatSuccessState(listMessage: listMessage));
+    }
+    print(page);
+  }
 
   FutureOr<void> _reload(ChatReloadEvent event, Emitter<ChatState> emit) {
     emit(ChatLoadingState());
     emit(ChatSuccessState(listMessage: listMessage));
+  }
+
+  FutureOr<void> _disconnect(
+      ChatDisconnectEvent event, Emitter<ChatState> emit) {
+    chatService.disconnect();
   }
 }

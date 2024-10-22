@@ -1,4 +1,6 @@
 package com.example.demo_10.service;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo_10.model.Roles;
 import com.example.demo_10.model.UserInfo;
 import com.example.demo_10.model.Users;
+
 import com.example.demo_10.repository.RolesRepository;
 import com.example.demo_10.repository.UserInfoRepository;
 import com.example.demo_10.repository.UsersRepository;
@@ -73,5 +76,5 @@ public class UsersService {
     	}
     	 return user.getUserInfo();
     }
-    
+	
 }

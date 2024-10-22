@@ -9,19 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_10.model.Doctors;
-import com.example.demo_10.model.Users;
+import com.example.demo_10.model.UserInfo;
+
 import com.example.demo_10.model.dto.DoctorsDTO;
-import com.example.demo_10.repository.UsersRepository;
+import com.example.demo_10.repository.UserInfoRepository;
+
 @Service
 public class DoctorsDTOService {
+
 	@Autowired
-	private UsersRepository usersRepository;
+	private UserInfoRepository userInfoRepository;
 	public List<DoctorsDTO> transToDoctorsDTO(List<Doctors> listDoctors, String username) {
 	    if (listDoctors.isEmpty()) {
 	        return Collections.emptyList();
 	    }
-	    Users user = usersRepository.findByUsername(username);
-	    List<Doctors> favoriteDoctors = new ArrayList<>(user.getFavoriteDoctors());
+	   
+	    UserInfo userInfo=userInfoRepository.findUserInfoByUsername(username);
+	    List<Doctors> favoriteDoctors = new ArrayList<>(userInfo.getFavoriteDoctors());
 	    
 	    List<DoctorsDTO> arrayListDTO = new ArrayList<>();
 	    for (Doctors doctor : listDoctors) {

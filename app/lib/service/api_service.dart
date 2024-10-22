@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:app/http_error_code.dart';
 import 'package:app/service/json_serializable.dart';
-import 'package:app/service/json_to_list.dart';
+import 'package:app/service/json_to_object.dart';
 import 'package:app/service/result.dart';
 import 'package:app/service/token.dart';
 import 'package:app/views/variables/variable.dart';
@@ -38,7 +38,7 @@ class ApiService {
     try {
       var response = await ApiService.putMapping(url, body);
       if (response.statusCode == 200) {
-        return JsonToListService.jsonToList(response, fromMap);
+        return JsonToObjectService.jsonToList(response, fromMap);
       } else {
         return "Failed to load data: ${getErrorMessage(response.statusCode)}";
       }
@@ -53,12 +53,10 @@ class ApiService {
           T Function(Map<String, dynamic>) fromMap, String url) async {
     try {
       var response = await ApiService.getMapping(url);
-
       if (response.statusCode == 200) {
-        var result = JsonToListService.jsonToList(response, fromMap);
+        var result = JsonToObjectService.jsonToList(response, fromMap);
 
-        var a = Result(data: result);
-        return a;
+        return Result(data: result);
       } else {
         return Result(
             error:
@@ -76,7 +74,7 @@ class ApiService {
     try {
       var response = await ApiService.postMapping(url, body);
       if (response.statusCode == 200) {
-        var result = JsonToListService.jsonToList(response, fromMap);
+        var result = JsonToObjectService.jsonToList(response, fromMap);
         return Result(data: result);
       } else {
         return Result(

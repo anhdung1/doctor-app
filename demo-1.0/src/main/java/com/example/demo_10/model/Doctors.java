@@ -11,8 +11,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Doctors {
@@ -28,10 +29,13 @@ public class Doctors {
 	private int experiences;
 	private LocalTime available;
 	private int price;
-
+	@OneToOne
+	@JoinColumn(name="id",referencedColumnName="id")
+	@JsonIgnore
+	private Users user;
 	@JsonIgnore
 	 @ManyToMany(mappedBy = "favoriteDoctors")
-	    private Set<Users> usersWhoFavorited = new HashSet<>();
+	    private Set<UserInfo> usersWhoFavorited = new HashSet<>();
 	public Long getId() {
 		return id;
 	}
@@ -92,10 +96,10 @@ public class Doctors {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public Set<Users> getUsersWhoFavorited() {
+	public Set<UserInfo> getUsersWhoFavorited() {
 		return usersWhoFavorited;
 	}
-	public void setUsersWhoFavorited(Set<Users> usersWhoFavorited) {
+	public void setUsersWhoFavorited(Set<UserInfo> usersWhoFavorited) {
 		this.usersWhoFavorited = usersWhoFavorited;
 	}
 

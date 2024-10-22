@@ -1,48 +1,30 @@
 package com.example.demo_10.model.response;
 
+import com.example.demo_10.model.UserInfo;
+
 public class LoginResponse {
     private String token;
-    private String image;
-    private String firstName;
-    private String lastName;
-    private Long id;
-    private String username;
+    private UserInfo userInfo;
 
-    public LoginResponse(String token, String username, String image,String lastName,String firstName,Long id) {
+    public LoginResponse(String token,UserInfo userInfo) {
         this.token = token;
-        this.firstName=firstName;
-        this.image=image;
-        this.username = username;
-        this.lastName = lastName;
-        this.id=id;
+        this.setUserInfo(userInfo);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
+    
 	public String getToken() {
 		return token;
 	}
 
-	public String getImage() {
-		return image;
+
+	public UserInfo getUserInfo() {
+		return userInfo;
 	}
 
-	public String getLastName() {
-		return lastName;
+
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 }
