@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo_10.model.Doctors;
 import com.example.demo_10.model.dto.DoctorsDTO;
-import com.example.demo_10.repository.DoctorsRepository;
 import com.example.demo_10.service.DoctorsDTOService;
+import com.example.demo_10.service.DoctorsService;
 import com.example.demo_10.service.FavoriteService;
 import com.example.demo_10.service.UsersService;
 
@@ -28,31 +28,23 @@ public class DoctorsController {
 	@Autowired 
 	private DoctorsDTOService doctorsDTOService;
 	@Autowired
-	private DoctorsRepository doctorsRepository;
+	private DoctorsService doctorsService;
 	@Autowired
 	private UsersService usersService;
 	@GetMapping
 	public ResponseEntity<List<DoctorsDTO>> getDoctors(){
-		List<Doctors> doctors=doctorsRepository.findRandomDoctors();
+		List<Doctors> doctors=doctorsService.findRandomDoctor();
 		if(doctors.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
 		return ResponseEntity.ok(doctorsDTOService.transToDoctorsDTO(doctors,usersService.getUsername()));
 	}
-	@GetMapping("/all-doctors")
-	public ResponseEntity<List<DoctorsDTO>> getAllDoctors(){
-		List<Doctors> doctors=doctorsRepository.findAll();
-		if(doctors.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-		
-		return ResponseEntity.ok(doctorsDTOService.transToDoctorsDTO(doctors,usersService.getUsername()));
-	}
+	
 	@GetMapping("/search")
 	public ResponseEntity<List<DoctorsDTO>> searchDoctors(@RequestParam String category){
 
-		List<Doctors> doctors=doctorsRepository.findByCategoryContaining(category);
+		List<Doctors> doctors=doctorsService.findByCategoryContaining(category);
 		if(doctors.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

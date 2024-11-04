@@ -1,31 +1,28 @@
 package com.example.demo_10.service;
-
-
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.demo_10.model.Appointments;
 import com.example.demo_10.model.Doctors;
 import com.example.demo_10.model.UserInfo;
-
 import com.example.demo_10.repository.DoctorsRepository;
-import com.example.demo_10.repository.UserInfoRepository;
-
 
 @Service
 public class DoctorsService {
 	@Autowired
-	private UserInfoRepository userInfoRepository;
+	private UserInfoService userInfoService;
 	@Autowired
 	private DoctorsRepository doctorsRepository;
 	public boolean removeFavoriteDoctor(String username, Long doctorId) {
-	    UserInfo useInfo = userInfoRepository.findUserInfoByUsername(username);
+	    UserInfo useInfo = userInfoService.findUserInfoByUsername(username);
 	    Doctors doctor = doctorsRepository.findById(doctorId).orElse(null);
 
 	    if (useInfo != null && doctor != null) {
 	 
 	        boolean removed = useInfo.getFavoriteDoctors().remove(doctor);
 	        if (removed) {
-	        	userInfoRepository.save(useInfo); 
+	        	userInfoService.saveUserInfo(useInfo); 
 	            return true;
 	        } else {
 	            return false;
@@ -33,4 +30,26 @@ public class DoctorsService {
 	    }
 	    return false; 
 	}
+	public List<Doctors> findByCategoryContaining(String category) {
+		return	doctorsRepository.findByCategoryContaining(category);
+	}
+	
+	public Doctors findById(Long doctorId) {
+		return doctorsRepository.findById(doctorId).orElseThrow();
+	}
+	public List<Appointments> getApointment(Long doctorId) {
+
+		Doctors doctor=doctorsRepository.findById(doctorId).orElseThrow();
+		List<Appointments> appointments=new ArrayList<Appointments>();
+		for(Appointments appointment:doctor.getAppointments()) {
+			if(appointment.getUsers()==null) {
+				appointments.add(appointment);
+			}
+		}
+		return appointments;
+	}
+	public List<Doctors>findRandomDoctor(){
+		return doctorsRepository.findRandomDoctors();
+	}
+
 }

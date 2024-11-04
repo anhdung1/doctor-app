@@ -7,17 +7,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Users {
@@ -27,10 +17,12 @@ public class Users {
 	private String username;
 	private String password;
 	@JsonIgnore
-	@OneToOne(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToOne(mappedBy="user",cascade=CascadeType.ALL)
 	private UserInfo userInfo;
-	@OneToOne(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToOne(mappedBy="user",cascade=CascadeType.ALL)
 	private Doctors doctor;
+	@OneToMany(mappedBy = "users")
+	private Set<Appointments> appointments;
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Roles role;
@@ -92,5 +84,12 @@ public class Users {
 	public void setDoctor(Doctors doctor) {
 		this.doctor = doctor;
 	}
-	
+
+    public Set<Appointments> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointments> appointments) {
+        this.appointments = appointments;
+    }
 }

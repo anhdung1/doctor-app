@@ -13,5 +13,6 @@ public interface DoctorsRepository extends JpaRepository<Doctors,Long>{
 	@Query(value = "SELECT * FROM doctors ORDER BY RAND() LIMIT 7", nativeQuery = true)
     List<Doctors> findRandomDoctors();
 	List<Doctors> findByCategoryContaining(String category);
+	
 
 }

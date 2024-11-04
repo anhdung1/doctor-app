@@ -10,24 +10,21 @@ import com.example.demo_10.model.Doctors;
 import com.example.demo_10.model.UserInfo;
 import com.example.demo_10.model.Users;
 import com.example.demo_10.model.dto.DoctorsDTO;
-import com.example.demo_10.repository.DoctorsRepository;
-import com.example.demo_10.repository.UserInfoRepository;
-import com.example.demo_10.repository.UsersRepository;
+
 import java.util.Collections;
 
 
 @Service
 public class FavoriteService {
 	@Autowired
-	private UsersRepository usersRepository;
-	@Autowired
-	private UserInfoRepository userInfoRepository;
+	private UsersService userService;
+	
 	@Autowired 
-	private DoctorsRepository doctorsRepository;
+	private DoctorsService doctorsService;
 	public Object favorite(String username, Long doctorId,boolean isFavorite) {
-		Users user=usersRepository.findByUsername(username);
-		 UserInfo userInfo = userInfoRepository.findByUser(user);
-		    Doctors doctor = doctorsRepository.findById(doctorId).orElse(null);
+		Users user=userService.findByUsername(username);
+		 UserInfo userInfo = user.getUserInfo();
+		    Doctors doctor = doctorsService.findById(doctorId);
 
 		    if (userInfo != null && doctor != null) {
 		        if(!isFavorite) {
@@ -35,20 +32,28 @@ public class FavoriteService {
 		        }else {
 		        	userInfo.getFavoriteDoctors().remove(doctor); 		       
 		        }
-		        usersRepository.save(user); 
+		        userService.saveUserWithUser(user); 
 		        DoctorsDTO doctorDTO=new DoctorsDTO(doctor, !isFavorite);
 		        return doctorDTO;
 		    }
 		    return false;
 	}
 	public List<DoctorsDTO> getFavoriteDoctors(String username) {
-	    UserInfo userInfo = userInfoRepository.findUserInfoByUsername(username);
+		Users user=userService.findByUsername(username);
+		UserInfo userInfo=user.getUserInfo();
+	    System.out.println(userInfo != null && userInfo.getFavoriteDoctors() != null);
 	    if (userInfo != null && userInfo.getFavoriteDoctors() != null) {
+	    	System.out.println("");
+	    	System.out.println("");
+	    	System.out.println(userInfo.getFavoriteDoctors());
+	    	System.out.println("");
+	    	System.out.println("");
 	        List<DoctorsDTO> arrayListDTO = new ArrayList<>();
 	        for (Doctors doctor : userInfo.getFavoriteDoctors()) {
 	            DoctorsDTO doctorsDTO = new DoctorsDTO(doctor, true);
 	            arrayListDTO.add(doctorsDTO);
 	        }
+	        
 	        return arrayListDTO;
 	    }
 	    return Collections.emptyList();

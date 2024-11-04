@@ -2,6 +2,7 @@ package com.example.demo_10.model;
 
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -36,6 +38,10 @@ public class Doctors {
 	@JsonIgnore
 	 @ManyToMany(mappedBy = "favoriteDoctors")
 	    private Set<UserInfo> usersWhoFavorited = new HashSet<>();
+	@JsonIgnore
+	@OneToMany(mappedBy="doctor")
+	private List<Appointments> appointments;
+	
 	public Long getId() {
 		return id;
 	}
@@ -101,6 +107,12 @@ public class Doctors {
 	}
 	public void setUsersWhoFavorited(Set<UserInfo> usersWhoFavorited) {
 		this.usersWhoFavorited = usersWhoFavorited;
+	}
+	public List<Appointments> getAppointments() {
+		return appointments;
+	}
+	public void setAppointments(List<Appointments> appointments) {
+		this.appointments = appointments;
 	}
 
 

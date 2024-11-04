@@ -8,14 +8,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo_10.service.AuthService;
 import com.example.demo_10.service.CustomUserDetailsService;
 import com.example.demo_10.service.JwtUtil;
 import com.example.demo_10.service.OtpService;
+
 import com.example.demo_10.service.UsersService;
+
 import com.example.demo_10.model.Users;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,7 +32,6 @@ public class AuthController {
     private OtpService otpService;
     @Autowired
     private JwtUtil jwtUtil;
-
     @Autowired
     private UsersService usersService;
     @Autowired	
@@ -88,5 +91,10 @@ public class AuthController {
     	}
     	authService.register(user);
     	return ResponseEntity.ok("Registered successfully");
+    }
+    @PostMapping("logout")
+    public ResponseEntity<?> logout(@RequestBody Users user){
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok("Logged out successfully");
     }
 }

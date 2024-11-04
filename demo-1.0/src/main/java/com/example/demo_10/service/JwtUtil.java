@@ -15,7 +15,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "mysecretkeymysecretkeymysecretkey"; // Key bí mật
+    private final String SECRET_KEY = "mysecretkeymysecretkeymysecretkey"; 
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
     public String extractUsername(String token) {
@@ -45,7 +45,7 @@ public class JwtUtil {
 
     public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role); // Thêm vai trò vào claims
+        claims.put("role", role); 
         return createToken(claims, username);
     }
 

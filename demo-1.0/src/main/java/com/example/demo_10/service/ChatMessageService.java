@@ -5,31 +5,26 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_10.model.ChatMessage;
-import com.example.demo_10.model.Doctors;
 import com.example.demo_10.model.Users;
 import com.example.demo_10.model.dto.ChatDTO;
 import com.example.demo_10.model.dto.ChatRequest;
 import com.example.demo_10.repository.ChatMessageRepository;
 
-import com.example.demo_10.repository.UsersRepository;
-
 @Service
 public class ChatMessageService {
 	@Autowired
-	private UsersRepository usersRepository;
+	private UsersService userService;
 	@Autowired
 	private ChatMessageRepository  chatMessageRepository;
 	public ChatDTO saveMessage(ChatRequest chatRequest) {
-//		System.out.println("start");
-//		System.out.println(chatRequest.getDoctorId());
-//		System.out.println("end");
 		ChatMessage newChatMessage=new ChatMessage();
 		newChatMessage.setTimestamp(LocalDateTime.now());
-		Users sender=usersRepository.findById(chatRequest.getSenderId()).orElseThrow();
-		Users receiver=usersRepository.findById(chatRequest.getReceiverId()).orElseThrow();
+		Users sender=userService.findById(chatRequest.getSenderId());
+		Users receiver=userService.findById(chatRequest.getReceiverId());
 		newChatMessage.setReceiver(receiver);
 		newChatMessage.setSender(sender);
 		newChatMessage.setContent(chatRequest.getContent());
@@ -48,34 +43,37 @@ public class ChatMessageService {
 	public List<ChatDTO> transListChatDTO(List<ChatMessage> listChatMessage) {
 		List<ChatDTO> listChat=new ArrayList<ChatDTO>();
 		for(ChatMessage chatMessage:listChatMessage) {
-			ChatDTO chat=new ChatDTO();
-			chat.setContent(chatMessage.getContent());
-			chat.setReceiverId(chatMessage.getReceiver().getId());
-			chat.setSenderId(chatMessage.getSender().getId());
-			chat.setTimestamp(chatMessage.getTimestamp());
+			ChatDTO chat=transChatDTO(chatMessage);
 			listChat.add(chat);
 		}
 		
 		return listChat;
 	}
-	public List<Doctors> getListDoctorMessage(String username){
-		Users user=usersRepository.findByUsername(username);
+	public List<Object> getListUserMessage(String username){
+		Users user=userService.findByUsername(username);
 		  if (user != null && user.getChatReceiver() != null) {
-		        List<Doctors> arrayList = new ArrayList<>();
+		        List<Object> arrayList = new ArrayList<>();
 		        for (Users newUser : user.getChatReceiver()) {
+		            if(newUser.getUserInfo()==null) {
+		            	arrayList.add(newUser.getDoctor());
+		            }else {
+		            	arrayList.add(newUser.getUserInfo());
+		            }
 		            
-		            arrayList.add(newUser.getDoctor());
 		        }
 		        return arrayList;
 		    }
 		    return Collections.emptyList();
 	}
 	public void createMessagePparticipants(Long doctorId,String username) {
-		Users doctor=usersRepository.findReceiverById(doctorId);
+		Users doctor=userService.findReceiverById(doctorId);
 		
 		if(doctor==null) {
-			Users user=usersRepository.findByUsername(username);
+			Users user=userService.findByUsername(username);
 			user.getChatReceiver().add(doctor);
 		}
+	}
+	public List<ChatMessage>findTop10Messages(Long senderId,Long receiverId,Pageable pageable){
+		return chatMessageRepository.findTop10Messages(senderId, receiverId, pageable);
 	}
 }

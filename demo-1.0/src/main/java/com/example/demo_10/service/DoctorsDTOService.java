@@ -12,19 +12,17 @@ import com.example.demo_10.model.Doctors;
 import com.example.demo_10.model.UserInfo;
 
 import com.example.demo_10.model.dto.DoctorsDTO;
-import com.example.demo_10.repository.UserInfoRepository;
 
 @Service
 public class DoctorsDTOService {
-
 	@Autowired
-	private UserInfoRepository userInfoRepository;
+	private UserInfoService userInfoService;
 	public List<DoctorsDTO> transToDoctorsDTO(List<Doctors> listDoctors, String username) {
 	    if (listDoctors.isEmpty()) {
 	        return Collections.emptyList();
 	    }
 	   
-	    UserInfo userInfo=userInfoRepository.findUserInfoByUsername(username);
+	    UserInfo userInfo=userInfoService.findUserInfoByUsername(username);
 	    List<Doctors> favoriteDoctors = new ArrayList<>(userInfo.getFavoriteDoctors());
 	    
 	    List<DoctorsDTO> arrayListDTO = new ArrayList<>();

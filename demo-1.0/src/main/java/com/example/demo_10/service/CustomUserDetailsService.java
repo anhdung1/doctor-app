@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo_10.model.Users;
 
-import com.example.demo_10.repository.UsersRepository;
+
 
 import java.util.Collections;
 
@@ -17,11 +17,11 @@ import java.util.Collections;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UsersService usersService;
    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users user = usersRepository.findByUsername(username);
+        Users user = usersService.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -33,6 +33,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
     public boolean checkUsername(String username) {
-    	return usersRepository.existsByUsername(username);
+    	return usersService.existByUsername(username);
     } 
 }
