@@ -22,7 +22,7 @@ public class AppointmentsController {
 	private AppointmentsService appointmentService;
 	@GetMapping
 	public ResponseEntity<List<Appointments>> getAppointment(@RequestParam Long doctorId){
-		return ResponseEntity.ok(doctorsService.getApointment(doctorId));
+		return ResponseEntity.ok(doctorsService.getAppointment(doctorId));
 	}
 
 	@PatchMapping("/{id}")

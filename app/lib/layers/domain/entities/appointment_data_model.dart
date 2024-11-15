@@ -1,5 +1,4 @@
 import 'package:app/layers/domain/service/json_serializable.dart';
-import 'package:intl/intl.dart';
 
 class AppointmentDataModel extends JsonSerializable {
   final String appointmentTime;

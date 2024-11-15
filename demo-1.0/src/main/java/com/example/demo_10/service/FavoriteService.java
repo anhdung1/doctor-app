@@ -24,17 +24,16 @@ public class FavoriteService {
 	public Object favorite(String username, Long doctorId,boolean isFavorite) {
 		Users user=userService.findByUsername(username);
 		 UserInfo userInfo = user.getUserInfo();
-		    Doctors doctor = doctorsService.findById(doctorId);
+		    Doctors doctor = doctorsService.getDoctorsRepository().findById(doctorId).orElseThrow();
 
-		    if (userInfo != null && doctor != null) {
+		    if (userInfo != null ) {
 		        if(!isFavorite) {
 		        	userInfo.getFavoriteDoctors().add(doctor);		 
 		        }else {
 		        	userInfo.getFavoriteDoctors().remove(doctor); 		       
 		        }
-		        userService.saveUserWithUser(user); 
-		        DoctorsDTO doctorDTO=new DoctorsDTO(doctor, !isFavorite);
-		        return doctorDTO;
+		        userService.saveUserWithUser(user);
+                return new DoctorsDTO(doctor, !isFavorite);
 		    }
 		    return false;
 	}

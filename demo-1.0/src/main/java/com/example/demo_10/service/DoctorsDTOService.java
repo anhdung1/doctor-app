@@ -22,7 +22,7 @@ public class DoctorsDTOService {
 	        return Collections.emptyList();
 	    }
 	   
-	    UserInfo userInfo=userInfoService.findUserInfoByUsername(username);
+	    UserInfo userInfo=userInfoService.getUserInfoRepository().findUserInfoByUsername(username);
 	    List<Doctors> favoriteDoctors = new ArrayList<>(userInfo.getFavoriteDoctors());
 	    
 	    List<DoctorsDTO> arrayListDTO = new ArrayList<>();

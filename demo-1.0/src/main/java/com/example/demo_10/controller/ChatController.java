@@ -47,7 +47,7 @@ public class ChatController {
         
             Pageable pageable = PageRequest.of(page, size);
 
-            List<ChatMessage> messages = chatMessageService.findTop10Messages(senderId, receiverId, pageable);
+            List<ChatMessage> messages = chatMessageService.getChatMessageRepository().findTop10Messages(senderId, receiverId, pageable);
            
             
                 
@@ -62,7 +62,7 @@ public class ChatController {
     public void createMessageParticipants(@RequestParam Long doctorId){
     	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	        String username = authentication.getName();
-    	chatMessageService.createMessagePparticipants(doctorId, username);
+    	chatMessageService.createMessageParticipants(doctorId, username);
     }
     @GetMapping("/chat/list-chatted")
     public ResponseEntity<List<Object>> getListDoctorsMessage(){

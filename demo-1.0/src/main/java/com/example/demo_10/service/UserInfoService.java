@@ -11,19 +11,15 @@ import com.example.demo_10.repository.UserInfoRepository;
 public class UserInfoService {
 
 	@Autowired
-	private UserInfoRepository userInfoRepsository;
-	
+	private UserInfoRepository userInfoRepository;
+	public UserInfoRepository getUserInfoRepository() {
+		return userInfoRepository;
+	}
 	public void saveUserInfo(Users user) {
 		UserInfo newUserInfo=new UserInfo();
 		newUserInfo.setUserInfoId(user.getId());
 		newUserInfo.setUser(user);
-		userInfoRepsository.save(newUserInfo);
-	}
-	public UserInfo findUserInfoByUsername(String username) {
-    	return userInfoRepsository.findUserInfoByUsername(username);
-    }
-	public void saveUserInfo(UserInfo userInfo) {
-		userInfoRepsository.save(userInfo);
+		userInfoRepository.save(newUserInfo);
 	}
 	
 }

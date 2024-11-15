@@ -33,7 +33,7 @@ public class DoctorsController {
 	private UsersService usersService;
 	@GetMapping
 	public ResponseEntity<List<DoctorsDTO>> getDoctors(){
-		List<Doctors> doctors=doctorsService.findRandomDoctor();
+		List<Doctors> doctors=doctorsService.getDoctorsRepository().findRandomDoctors();
 		if(doctors.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -44,7 +44,7 @@ public class DoctorsController {
 	@GetMapping("/search")
 	public ResponseEntity<List<DoctorsDTO>> searchDoctors(@RequestParam String category){
 
-		List<Doctors> doctors=doctorsService.findByCategoryContaining(category);
+		List<Doctors> doctors=doctorsService.getDoctorsRepository().findByCategoryContaining(category);
 		if(doctors.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

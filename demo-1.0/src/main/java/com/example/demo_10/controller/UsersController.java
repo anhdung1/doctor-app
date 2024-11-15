@@ -22,7 +22,7 @@ public class UsersController {
 	@GetMapping
 	public UserInfo getUserInfor() {
 	
-		return userInfoService.findUserInfoByUsername(userService.getUsername());
+		return userInfoService.getUserInfoRepository().findUserInfoByUsername(userService.getUsername());
 	}
 	@PutMapping
 	public UserInfo updateUserInfo(@RequestBody UserInfo userInfo) {

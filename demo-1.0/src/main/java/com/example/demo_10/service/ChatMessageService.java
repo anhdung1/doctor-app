@@ -20,6 +20,9 @@ public class ChatMessageService {
 	private UsersService userService;
 	@Autowired
 	private ChatMessageRepository  chatMessageRepository;
+	public ChatMessageRepository getChatMessageRepository() {
+		return chatMessageRepository;
+	}
 	public ChatDTO saveMessage(ChatRequest chatRequest) {
 		ChatMessage newChatMessage=new ChatMessage();
 		newChatMessage.setTimestamp(LocalDateTime.now());
@@ -65,15 +68,13 @@ public class ChatMessageService {
 		    }
 		    return Collections.emptyList();
 	}
-	public void createMessagePparticipants(Long doctorId,String username) {
-		Users doctor=userService.findReceiverById(doctorId);
+	public void createMessageParticipants(Long doctorId,String username) {
+		Users doctor=userService.getUsersRepository().findReceiverById(doctorId);
 		
 		if(doctor==null) {
 			Users user=userService.findByUsername(username);
-			user.getChatReceiver().add(doctor);
+			user.getChatReceiver().add(userService.getUsersRepository().findById(doctorId).orElseThrow());
 		}
 	}
-	public List<ChatMessage>findTop10Messages(Long senderId,Long receiverId,Pageable pageable){
-		return chatMessageRepository.findTop10Messages(senderId, receiverId, pageable);
-	}
+
 }

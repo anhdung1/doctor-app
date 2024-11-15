@@ -17,17 +17,17 @@ public class UsersService {
 	private  RolesService rolesService;
 	@Autowired
     private UsersRepository usersRepository;
+	public UsersRepository getUsersRepository() {
+		return usersRepository;
+	}
     public UsersService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
-	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String encodePassword(String rawPassword) {
         
         return passwordEncoder.encode(rawPassword);
-    }
-    public boolean checkUsernameExists(String username) {
-        return usersRepository.existsByUsername(username);
     }
     public void register(Users user) {
 		 
@@ -52,9 +52,7 @@ public class UsersService {
     public Users findByUsername(String username) {
     	return usersRepository.findByUsername(username);
     }
-    public Users findReceiverById(Long receiverId) {
-    	return usersRepository.findReceiverById(receiverId);
-    }
+
     public Users findById(Long id) {
     	return usersRepository.findById(id).orElseThrow();
     }
